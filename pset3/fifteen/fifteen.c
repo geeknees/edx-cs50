@@ -159,7 +159,25 @@ void greet(void)
  */
 void init(void)
 {
-    // TODO
+    // define a counter and populate the array
+    int c = 1;
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+        // fill the tiles in descending order
+        board[i][j] = d * d - c;
+        c++;
+        }
+    }
+    //make the last tile blank
+    board[d-1][d-1] = 0;
+    // if there are an odd number of tiles, switch 1 and 2
+    if ((d * d)%2 == 0)
+    {
+        board[d-1][d-2] = 2;
+        board[d-1][d-3] = 1;
+    }
 }
 
 /**
@@ -167,7 +185,14 @@ void init(void)
  */
 void draw(void)
 {
-    // TODO
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++) 
+        {
+            printf("%2d ", board[i][j]);
+        }
+        printf("\n");
+    }
 }
 
 /**
@@ -176,7 +201,45 @@ void draw(void)
  */
 bool move(int tile)
 {
-    // TODO
+    // establish algorithm for checking bordering tiles
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            if (board[i][j] == tile)
+            {
+                //check if the blank is to the right
+                if (j+1 <= d-1 && board[i][j+1] == 0)
+                {
+                    board[i][j+1] = tile;
+                    board[i][j] = 0;
+                    return true;
+                }
+                // check if the blank is to the left
+                else if (j-1 >= 0 && board[i][j-1] == 0)
+                {
+                    board[i][j-1] = tile;
+                    board[i][j] = 0;
+                    return true;
+                }
+                // check if the blank is above
+                else if (i-1 >= 0 && board[i-1][j] == 0)
+                {
+                    board[i-1][j] = tile;
+                    board[i][j] = 0;
+                    return true;
+                }
+                // check if the blank is below
+                else if (i+1 <= d-1 && board[i+1][j] == 0)
+                {
+                    board[i+1][j] = tile;
+                    board[i][j] = 0;
+                    return true;
+                }
+            
+            }
+        }
+    }
     return false;
 }
 
@@ -186,6 +249,27 @@ bool move(int tile)
  */
 bool won(void)
 {
-    // TODO
+    // check if board is sorted
+    int n = 1;
+    
+    // check to see if last tile is blank and return false if it is not
+    if (board[d-1][d-1] != 0)
+        return false;
+    
+    // set up for loops to check if numbers are in ascending order beginning with 1
+    for (int i = 0; i < d; i++)
+    {
+        for (int j = 0; j < d; j++)
+        {
+            // check last grid position first, if blank, return true
+            if (i == d - 1 && j == d - 1)
+                return true;
+                
+            // check the numbers on the rest of the tiles
+            if (n != board[i][j])
+                return false;
+            n++;                        
+        }
+    }
     return false;
 }
