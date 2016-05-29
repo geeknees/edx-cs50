@@ -1,0 +1,11 @@
+0.  silicosisma
+1.  getrusage() returns resource usage measures for who, which can be one of the following:
+2.  16 members
+3.  to save time and memory
+4.  this program reads characters in one by one.
+5.  fscanf is vulnerable to buffer overflow
+6.  to throw errors and alert
+7.  a hash table of singly-linked lists
+8.  0.15s
+9.  different hash table sizes
+10. the hash did not perfectly
