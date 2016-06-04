@@ -1,0 +1,19 @@
+0.  BMP supports up to 16.777.216 colors. GIF supports 256 colors. JPEG supports 16.777.216 colors. 
+1.  GIF
+2.  Lossless compression allows to recovre original data.
+3.  JPEG
+4.  Reference is going to delete.
+5.  overwrite with zeros
+6   a header file declaring various integer.
+7.  to make plattform-independent code
+8.  BYTE is 8 bit, DWORD and LONG are 32bit, WORD is 16 bit.
+9.  0x42 0x4d
+10. bfSize is for the bitmap file,  biSize is for Bitmapinfoheader. 
+11. The image is going to be upside-down.
+12. This is defined in biBitCount.
+13. In the case of no write permission.
+14. To copy one individual structur. 
+15. 3
+16. fseek is used to move a position pointer through a file stream.
+17. indicates the current position of the position pointer.
+18. Ronald Reagan?
