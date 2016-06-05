@@ -445,25 +445,36 @@ char* htmlspecialchars(const char* s)
 char* indexes(const char* path)
 {
     // TODO
-    
-    char* a = "/index.html";
-    char* b = "/index.php";
-    char* indexhtml = malloc(strlen(a) + strlen(path) + 1);
-    strcpy(indexhtml, path);
-    strcat(indexhtml, a);
-    char* indexphp = malloc(strlen(b) + strlen(path) + 1);
-    strcpy(indexphp, path);
-    strcat(indexphp, b);
-    
-    if(access(indexhtml, F_OK) == 1)
-    {
-        return indexhtml;
+
+    int path_length = strlen(path) + 1;
+    char* index_php = "/index.php";
+    char* index_html = "/index.html";
+
+    char* index_php_path = malloc(path_length + 12);
+
+    if (index_php_path == NULL) return NULL;
+    strcpy(index_php_path, path);
+    strcat(index_php_path, index_php);
+
+    if (access(index_php_path, F_OK) != -1) {
+        return index_php_path;
+    } else {
+        free(index_php_path);
     }
-    else if(access(indexphp, F_OK) == 1)
-    {
-        return indexphp;
+
+    char* index_html_path = malloc(path_length + 12);
+
+    if (index_html_path == NULL) return NULL;
+    strcpy(index_html_path, path);
+    strcat(index_html_path, index_html);
+        
+    if (access(index_html_path, F_OK) != -1) {
+        return index_html_path;
+    } else {
+        free(index_html_path);
     }
-    return NULL;
+
+    return NULL; 
 }
 
 /**
@@ -743,6 +754,12 @@ bool parse(const char* line, char* abs_path, char* query)
     char* httpversioncopy;
     
     // extract method, request-target, and http version to tokens
+    if(strstr(linecopy, "  ") != NULL)
+    {
+        error(400);
+        return false;
+    }
+    
     methodcopy = strtok(linecopy, " ");
     requesttargetcopy = strtok(NULL, " ");
     httpversioncopy = strtok(NULL, "\r\n");
@@ -764,21 +781,25 @@ bool parse(const char* line, char* abs_path, char* query)
     if (strcmp(method, "GET") != 0)
     {
         error(405);
+        return false;
     }
     // ensure request-target begins with "/"
     if (strncmp(requesttarget, "/", 1) != 0)
     {
         error(501);
+        return false;
     }
     // ensure request-target does not contain '"'
     if (strchr(requesttarget, '"') != NULL)
     {
         error(400);
+        return false;
     }
     // ensure HTTP version is 1.1
     if (strcmp(httpversion, "HTTP/1.1") != 0)
     {
         error(505);
+        return false;
     }
          
     // extract query from request-target
@@ -808,11 +829,13 @@ bool parse(const char* line, char* abs_path, char* query)
     if (strchr(abs_path, '?') != NULL)
     {
         error(400);
+        return false;
     }
     // ensure query does not contain '"'
     if (strchr(query, '"') != NULL)
     {
         error(400);
+        return false;
     }
     return true;
 }
